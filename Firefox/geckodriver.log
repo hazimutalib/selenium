@@ -1,0 +1,42 @@
+1661967423573	geckodriver	INFO	Listening on 127.0.0.1:53810
+1661967426655	mozrunner::runner	INFO	Running command: "C:\\Program Files\\mozilla firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "53811" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MS-PC\\AppData\\Local\\Temp\\rust_mozprofile63qTcM"
+1661967427800	Marionette	INFO	Marionette enabled
+1661967427811	Marionette	INFO	Listening on port 53820
+WebDriver BiDi listening on ws://localhost:53811
+Read port: 53820
+1661967428087	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MS-PC\\AppData\\Local\\Temp\\rust_mozprofile63qTcM\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:53811/devtools/browser/6f3039ed-500c-44b0-a410-51f0cb9e8a04
+JavaScript warning: https://s20.tiktokcdn.com/tiktok/common/init.js?seed=AMDh8_SCAQAAewGlZezOooZFahILYt25ygkgx6RnC2WbDLG6m-M5Tb4gk21U&hTc6j8Njvn--z=q, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript warning: https://s20.tiktokcdn.com/tiktok/common/init.js?seed=AMDh8_SCAQAAewGlZezOooZFahILYt25ygkgx6RnC2WbDLG6m-M5Tb4gk21U&hTc6j8Njvn--z=q, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript warning: https://sf16-secsdk.ttwstatic.com/obj/rc-web-sdk-gcs/webmssdk/1.0.0.412/webmssdk.js, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript warning: https://sf16-secsdk.ttwstatic.com/obj/rc-web-sdk-sg/webmssdk_ex/1.0.0.41/webmssdk_ex.js, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript warning: https://lf16-tiktok-web.ttwstatic.com/obj/tiktok-web/tiktok/webapp/main/webapp-desktop/npm-async-eb873fff.8ee498ef4e5802f5c6d2.js line 2 > Function, line 3: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[Child 6652, MediaDecoderStateMachine #1] WARNING: Decoder=22392367c00 state=DECODING_METADATA Decode metadata failed, shutting down decoder: file /builds/worker/checkouts/gecko/dom/media/MediaDecoderStateMachine.cpp:370
+[Child 6652, MediaDecoderStateMachine #1] WARNING: Decoder=22392367c00 Decode error: NS_ERROR_DOM_MEDIA_METADATA_ERR (0x806e0006) - static MP4Metadata::ResultAndByteBuffer __cdecl mozilla::MP4Metadata::Metadata(mozilla::ByteStream *): Cannot parse metadata: file /builds/worker/checkouts/gecko/dom/media/MediaDecoderStateMachineBase.cpp:151
+JavaScript error: , line 0: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+JavaScript error: , line 0: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+1661967863835	Marionette	INFO	Stopped listening on port 53820
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+SourceActor threw an exception: Error: Failed to fetch https://s20.tiktokcdn.com/tiktok/common/init.js?async. Code 2147500036.
+Stack: onResponse@resource://devtools/shared/DevToolsUtils.js:583:16
+onStopRequest@resource://gre/modules/NetUtil.jsm:126:18
+Line: 583, column: 16
+console.error: (new Error("Failed to fetch https://s20.tiktokcdn.com/tiktok/common/init.js?async. Code 2147500036.", "resource://devtools/shared/DevToolsUtils.js", 583))
+ No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MS-PC\\AppData\\Local\\Temp\\rust_mozprofileLB9gNa\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:53515/devtools/browser/2582900b-5b44-4d7e-9d5a-ed6d9b401a5c
+JavaScript warning: https://sf16-secsdk.ttwstatic.com/obj/rc-web-sdk-gcs/webmssdk/1.0.0.412/webmssdk.js, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript warning: https://s20.tiktokcdn.com/tiktok/common/init.js?seed=AMDh8_SCAQAAewGlZezOooZFahILYt25ygkgx6RnC2WbDLG6m-M5Tb4gk21U&hTc6j8Njvn--z=q, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript warning: https://sf16-secsdk.ibytedtos.com/obj/rc-web-sdk-sg/webmssdk_ex/1.0.0.41/webmssdk_ex.js, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript warning: https://lf16-tiktok-web.ttwstatic.com/obj/tiktok-web/tiktok/webapp/main/webapp-desktop/npm-async-eb873fff.8ee498ef4e5802f5c6d2.js line 2 > Function, line 3: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+1661996716516	geckodriver	INFO	Listening on 127.0.0.1:50130
+1661996719736	mozrunner::runner	INFO	Running command: "C:\\Program Files\\mozilla firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "50131" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\MS-PC\\AppData\\Local\\Temp\\rust_mozprofilejtTEc2"
+1661996720403	Marionette	INFO	Marionette enabled
+1661996720413	Marionette	INFO	Listening on port 50140
+WebDriver BiDi listening on ws://localhost:50131
+Read port: 50140
+1661996720666	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\MS-PC\\AppData\\Local\\Temp\\rust_mozprofilejtTEc2\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:50131/devtools/browser/2741b95c-0b79-45d2-8c1e-4c58f75ec85c
+1661996804811	Marionette	INFO	Stopped listening on port 50140
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
