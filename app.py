@@ -26,7 +26,7 @@ st.markdown("""
 st.write(""" # TikTok Sentiment Analysis""")
 
 
-df = pd.read_csv(r'.\nurul izzah\sentiment.csv')
+df = pd.read_csv('./nurul izzah/sentiment.csv')
 
 col1, col2= st.columns(2)
 video_posted_date = col1.multiselect('Video posted date', df['video_posted_date'].sort_values( ascending = False).unique(),
