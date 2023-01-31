@@ -26,7 +26,7 @@ st.markdown("""
 st.write(""" # TikTok Sentiment Analysis""")
 
 
-df = pd.read_csv(r'C:\Users\Analyst07\Documents\Selenium\nurul izzah\sentiment.csv')
+df = pd.read_csv(r'.\nurul izzah\sentiment.csv')
 
 col1, col2= st.columns(2)
 video_posted_date = col1.multiselect('Video posted date', df['video_posted_date'].sort_values( ascending = False).unique(),
@@ -36,8 +36,8 @@ df['video_posted_date'].sort_values( ascending = True).unique(), key = 1 )
 df = df[df['video_posted_date'].isin(video_posted_date) ]
 
 
-stopwords = pd.read_csv(r'C:\Users\Analyst07\Documents\Selenium\stopwords-ms.csv')
-mask = np.array(Image.open(r"C:\Users\Analyst07\Documents\Selenium\tiktok.jpg"))
+stopwords = pd.read_csv('stopwords-ms.csv')
+mask = np.array(Image.open('tiktok.jpg'))
 # image = Image.open(r"C:\Users\Analyst07\Documents\Selenium\tiktok.jpg")
 # st.image(image)
 stop = []
