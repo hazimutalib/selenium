@@ -4,8 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from PIL import Image
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
-import plotly.express as px
-import malaya
 
 @st.cache
 def convert_df_to_csv(df):
