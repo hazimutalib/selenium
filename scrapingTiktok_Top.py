@@ -111,6 +111,9 @@ for tarikh in soup.find_all('div', class_= 'tiktok-842lvj-DivTimeTag e19c29qe14'
     elif tarikh.find('w') != -1:
         x = datetime.now() - timedelta(weeks = int(tarikh.split('w')[0]))
         tarikh = '{}-{}-{}'.format(x.year,x.month,x.day)
+    elif (len(tarikh)==4) | (len(tarikh)==5) :
+        x = tarikh.split('-')
+        tarikh = '{}-{}-{}'.format(x[1],'0'+x[1] if len(x[0]) == 1 else x[0], datetime.now().year)
     else: 
         tarikh = tarikh
     posted_date.append(tarikh)

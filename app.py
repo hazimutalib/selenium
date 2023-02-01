@@ -45,15 +45,12 @@ try:
 except:
     st.write('Please select range of date')
 
-stopwords = pd.read_csv('stopwords-ms.csv')
 mask = np.array(Image.open('tiktok.jpg'))
 # image = Image.open(r"C:\Users\Analyst07\Documents\Selenium\tiktok.jpg")
 # st.image(image)
-stop = []
-for text in stopwords.stopwords:
-    stop.append(text)
+stop = ['tu', 'dia', 'nak', 'yg' , 'la', 'dah', 'nk', 'ni', 'je', 'di', 'ko', 'ok', 'ini', 'pun' , 'dgn', 'utk', 'kat', 'kt', 'aku', 'kau', 'kita'
+        'kan', 'lg', 'dlm', 'pon', 'tau', 'jer', 'itu', 'dan', 'saya', 'sy', 'sbb', 'nya']
 
-# model = malaya.sentiment.multinomial()
 
 df = df[['sentiment', 'comment', 'username', 'nickname', 'likes', 'noOfRepliedComments', 'posted_date',	'extracted_date', 'video_link',
 	'video_likes', 'video_comments', 'video_shared', 'video_posted_date']]
