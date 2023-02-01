@@ -6,9 +6,12 @@ from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 import plotly.express as px
 import malaya
 import glob
+import sys
+
+keyword = sys.argv[1]
 
 l = []
-for name in glob.glob(r'C:\Users\Analyst07\Documents\Selenium\nurul izzah\nurul izzah*'):
+for name in glob.glob('C:\\Users\\Analyst07\\Documents\\Selenium\\{}\\{}*'.format(keyword,keyword.split('_')[1])):
     df_temp = pd.read_csv(name)
     l.append(df_temp)
     df = pd.concat(l)
@@ -26,4 +29,4 @@ model = malaya.sentiment.multinomial()
 
 df['sentiment'] = model.predict(list(df.comment))
 
-df.to_csv(r'C:\Users\Analyst07\Documents\Selenium\nurul izzah\sentiment.csv', index = False)
+df.to_csv('C:\\Users\\Analyst07\\Documents\\Selenium\\{}\\sentiment.csv'.format(keyword), index = False)

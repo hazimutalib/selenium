@@ -7,14 +7,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import time 
-from datetime import date
+from datetime import date, datetime, timedelta
 import re
 import sys
 from scrapingTiktokComments import scrape_tiktok_comments
 import os
+import re
 
 
-
+timenow = datetime.now()
 #Buka Edge and the website
 http = 'https://www.tiktok.com'
 pathEdge = r'C:\Users\Analyst07\Documents\Selenium\Edge\msedgedriver.exe'
@@ -36,7 +37,7 @@ time.sleep(5)
 #Search Based on Hashtag
 searchHashtag = sys.argv[1]
 parent_dir = "C:\\Users\\Analyst07\\Documents\\Selenium"
-path = os.path.join(parent_dir, searchHashtag)
+path = os.path.join(parent_dir, 'keyword_{}_({})'.format(searchHashtag,date.today()))
 os.mkdir(path)
 element = driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div/div[1]/div/form/input")
 
@@ -46,24 +47,24 @@ element.send_keys(Keys.ENTER)
 time.sleep(10)
 
 #menu Top
-ii=0
-while ii<1:
+i=0
+while i<1:
     try:
         driver.find_element(By.XPATH, "/html/body/div[2]/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[1]/div").click()
-        ii=1
+        i=1
     except:
-        ii=0
+        i=0
         time.sleep(5)
 
 #Load More
-i=0
-while i<30:
+ii=0
+while ii<5:
     try:
         NextStory = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[2]/div[3]/div[2]/div[2]/div[2]/button")))
         NextStory.click()
         time.sleep(2)
     except:
-        i=30
+        ii=30
 
 #Data html page tiktok dari beutifulsoup4
 html = driver.execute_script("return document.getElementsByTagName('html')[0].innerHTML")
@@ -100,7 +101,19 @@ for view in soup.find_all('div', class_= 'tiktok-1lbowdj-DivPlayIcon etrd4pu4'):
 
 #posted_date
 for tarikh in soup.find_all('div', class_= 'tiktok-842lvj-DivTimeTag e19c29qe14'):
-    posted_date.append(tarikh.text)
+    tarikh = tarikh.text
+    if tarikh.find('h') != -1:
+        x = datetime.now() - timedelta(hours = int(tarikh.split('h')[0]))
+        tarikh = '{}-{}-{}'.format(x.year,x.month,x.day)
+    elif tarikh.find('d') != -1:
+        x = datetime.now() - timedelta(days = int(tarikh.split('d')[0]))
+        tarikh = '{}-{}-{}'.format(x.year,x.month,x.day)
+    elif tarikh.find('w') != -1:
+        x = datetime.now() - timedelta(weeks = int(tarikh.split('w')[0]))
+        tarikh = '{}-{}-{}'.format(x.year,x.month,x.day)
+    else: 
+        tarikh = tarikh
+    posted_date.append(tarikh)
 
 
 
@@ -117,10 +130,11 @@ dict_data = dict(zip(
 df = pd.DataFrame(data=dict_data)
 df['extracted_date'] = date.today()
 
-df.to_csv(path + '\\topVideos({}).csv'.format(searchHashtag), index=False)
+df.to_csv(path + '\\topVideos({})_({}).csv'.format(searchHashtag,date.today()), index=False)
 
+# df = df.sort_values(by = ['posted_date'], ascending = False).reset_index(drop = True)
 
-for link, tarikh in zip(df['tiktok_link'][:10],df['posted_date'][:10]):
+for link, tarikh in zip(df['tiktok_link'][:15],df['posted_date'][:15]):
     scrape_tiktok_comments(path, link, searchHashtag, tarikh)
 
     

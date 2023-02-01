@@ -4,6 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from PIL import Image
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
+import glob
+from datetime import date
 
 @st.cache
 def convert_df_to_csv(df):
@@ -25,16 +27,23 @@ st.markdown("""
 
 st.write(""" # TikTok Sentiment Analysis""")
 
+column= st.columns([2, 2, 2, 6])
+keywords = glob.glob('keyword*')
+keyword = column[0].selectbox('Choose keyword: ', [x.split('_')[1] for x in keywords])
 
-df = pd.read_csv('./nurul izzah/sentiment.csv')
 
-col1, col2= st.columns(2)
-video_posted_date = col1.multiselect('Video posted date', df['video_posted_date'].sort_values( ascending = False).unique(),
-df['video_posted_date'].sort_values( ascending = True).unique(), key = 1 )
-# sentiment = col2.multiselect('Sentiment', df['sentiment'].unique(),df['sentiment'].unique(), key =2 )
 
-df = df[df['video_posted_date'].isin(video_posted_date) ]
+df = pd.read_csv('./{}/sentiment.csv'.format(keywords[[x.split('_')[1] for x in keywords].index(keyword)]))
 
+st.write("##### Data scraped from {} videos as of {} and based on keyword: {}".format(len(df.video_link.unique()), keywords[[x.split('_')[1] for x in keywords].index(keyword)].split('_')[2][1:-1], keyword)) 
+
+df['video_posted_date'] = pd.to_datetime(df['video_posted_date']).dt.date
+
+video_date_posted = column[1].date_input('Date of the videos being posted:', value = (min(df['video_posted_date']), max(df['video_posted_date'])),key=1)
+try:
+    df = df[(df['video_posted_date']>= video_date_posted[0]) & (df['video_posted_date']<= video_date_posted[1])]
+except:
+    st.write('Please select range of date')
 
 stopwords = pd.read_csv('stopwords-ms.csv')
 mask = np.array(Image.open('tiktok.jpg'))
@@ -44,19 +53,19 @@ stop = []
 for text in stopwords.stopwords:
     stop.append(text)
 
-words = ''
-for text in df['comment']:
-    words = words + ' ' + text
-words = words.lower()
-
 # model = malaya.sentiment.multinomial()
 
 df = df[['sentiment', 'comment', 'username', 'nickname', 'likes', 'noOfRepliedComments', 'posted_date',	'extracted_date', 'video_link',
 	'video_likes', 'video_comments', 'video_shared', 'video_posted_date']]
 
 st.write("\n \n \n")
-df = df.sort_values(by = ['likes'], ascending = False)
+df = df.sort_values(by = ['likes'], ascending = False).reset_index(drop = True)
+
+subkeyword = column[2].text_input("Search sub-keyword")
+df = df[df['comment'].apply(lambda x: str(x).lower().find(subkeyword.lower())) != -1]
 st.write(df)
+
+
 st.download_button(
   label="Download data as CSV",
   data=convert_df_to_csv(df),
@@ -80,6 +89,11 @@ st.write("##### Based on {} comments:".format(len(df)))
 # ax[1].set_title(label = 'Sentiment', loc = 'left',pad = pad, fontsize = 6)
 
 x1, padding, x2 = st.columns([6,3,9])
+
+words = ''
+for text in df['comment']:
+    words = words + ' ' + text
+words = words.lower()
 
 wordcloud = WordCloud(stopwords = stop, max_font_size=50, max_words=100, background_color="white",mask = mask).generate(words)
 fig1, ax1 = plt.subplots()
@@ -125,16 +139,18 @@ x2.pyplot(fig2)
 
 st.write('\n')
 st.write('\n')
-col = st.columns(4)
-keyword = col[0].text_input("Search keyword")
 
-df1 = df[df['comment'].apply(lambda x: str(x).lower().find(keyword)) != -1]
 
-st.write(df1)
+# col = st.columns(4)
+# subkeyword = col[0].text_input("Search keyword")
 
-st.download_button(
-  label="Download data as CSV",
-  data=convert_df_to_csv(df1),
-  file_name='test_{}.csv'.format(keyword),
-  mime='text/csv',
-)
+
+
+# st.write(df1)
+
+# st.download_button(
+#   label="Download data as CSV",
+#   data=convert_df_to_csv(df1),
+#   file_name='test_{}.csv'.format(keyword),
+#   mime='text/csv',
+# )
