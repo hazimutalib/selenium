@@ -62,7 +62,7 @@ st.write("\n \n \n")
 df = df.sort_values(by = ['likes'], ascending = False).reset_index(drop = True)
 
 subkeyword = column[2].text_input("Search sub-keyword")
-df = df[df['comment'].apply(lambda x: str(x).lower().find(subkeyword.lower())) != -1]
+df = df[df['comment'].apply(lambda x: str(x).lower().find(subkeyword.lower())) != -1].reset_index(drop = True)
 st.write(df)
 
 
