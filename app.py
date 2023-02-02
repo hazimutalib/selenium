@@ -25,6 +25,8 @@ st.markdown("""
   </style>
   """, unsafe_allow_html=True,)
 
+
+
 st.write(""" # TikTok Sentiment Analysis""")
 
 column= st.columns([2, 2, 2, 6])
@@ -59,11 +61,106 @@ df = df.sort_values(by = ['likes'], ascending = False).reset_index(drop = True)
 
 subkeyword = column[2].text_input("Search sub-keyword")
 df = df[df['comment'].apply(lambda x: str(x).lower().find(subkeyword.lower())) != -1].reset_index(drop = True)
-st.write("##### Data scraped from {} videos as of {} and based on keyword: {}".format(len(df.video_link.unique()), keywords[[x.split('_')[1] for x in keywords].index(keyword)].split('_')[2][1:-1], keyword)) 
+st.write("##### Data scraped as of {} and based on keyword: {}".format(keywords[[x.split('_')[1] for x in keywords].index(keyword)].split('_')[2][1:-1], keyword)) 
 
 
+total_videos = len(df.video_link.unique())
+total_comments = len(df)
+total_user = len(df.username.unique())
+
+st.markdown("""
+<style>
+.icon {  
+  float: right;
+  font-size:500%;
+  position: absolute;
+  top:0rem;
+  right:-0.3rem;
+  opacity: .16;
+}
 
 
+#container
+{
+  width: 1200px;
+  display: flex;
+}
+
+.grey-dark
+{
+  background: #495057;
+  color: #efefef;
+}
+
+.red-gradient {
+  background: linear-gradient(180deg, rgba(0, 4, 40,0.8) 0%, rgba(0, 78, 146,0.8) 80%);
+  color: #fff;
+}
+.red {
+  background: #a83b3b;
+  color: #fff;
+}
+
+
+.purple
+{
+  background: #886ab5;
+  color: #fff;
+}
+
+.orange {
+  background: #ffc241;
+  color: #fff;
+}
+
+.kpi-card
+{
+  overflow: hidden;
+  position: relative;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.75);;
+  display: inline-block;
+  float: left;
+  padding: 1em;
+  border-radius: 0.3em;
+  font-family: sans-serif;  
+  width: 150px;
+  min-width: 150px;
+  margin-right: 6.0em;
+  margin-bottom: 1em;
+}
+
+.card-value {
+  display: block;
+  font-size: 200%;  
+  font-weight: bolder;
+}
+
+.card-text {
+  display:block;
+  font-size: 70%;
+  padding-left: 0.2em;
+}
+</style>
+ """, unsafe_allow_html=True)
+
+st.markdown("""<div id="container">
+  <div class="kpi-card red-gradient ">
+    <span class="card-value">{:,}</span>
+    <span class="card-text">Total Videos</span>
+  </div>
+  <div class="kpi-card red-gradient ">
+    <span class="card-value">{:,}</span>
+    <span class="card-text">Total Comments</span>
+  </div>
+  <div class="kpi-card red-gradient ">
+    <span class="card-value">{:,}</span>
+    <span class="card-text">Total Username</span>
+  </div>
+</div>""".format(total_videos, total_comments, total_user), unsafe_allow_html=True
+)
+
+
+st.write("\n")
 st.write(df)
 
 # def make_clickable(link):
