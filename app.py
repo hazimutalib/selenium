@@ -44,9 +44,6 @@ try:
 except:
     st.write('Please select range of date')
 
-
-st.write("##### Data scraped from {} videos as of {} and based on keyword: {}".format(len(df.video_link.unique()), keywords[[x.split('_')[1] for x in keywords].index(keyword)].split('_')[2][1:-1], keyword)) 
-
 mask = np.array(Image.open('tiktok.jpg'))
 # image = Image.open(r"C:\Users\Analyst07\Documents\Selenium\tiktok.jpg")
 # st.image(image)
@@ -62,6 +59,9 @@ df = df.sort_values(by = ['likes'], ascending = False).reset_index(drop = True)
 
 subkeyword = column[2].text_input("Search sub-keyword")
 df = df[df['comment'].apply(lambda x: str(x).lower().find(subkeyword.lower())) != -1].reset_index(drop = True)
+st.write("##### Data scraped from {} videos as of {} and based on keyword: {}".format(len(df.video_link.unique()), keywords[[x.split('_')[1] for x in keywords].index(keyword)].split('_')[2][1:-1], keyword)) 
+
+
 
 
 st.write(df)
