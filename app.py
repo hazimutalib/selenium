@@ -35,7 +35,6 @@ keyword = column[0].selectbox('Choose keyword: ', [x.split('_')[1] for x in keyw
 
 df = pd.read_csv('./{}/sentiment.csv'.format(keywords[[x.split('_')[1] for x in keywords].index(keyword)]))
 
-st.write("##### Data scraped from {} videos as of {} and based on keyword: {}".format(len(df.video_link.unique()), keywords[[x.split('_')[1] for x in keywords].index(keyword)].split('_')[2][1:-1], keyword)) 
 
 df['video_posted_date'] = pd.to_datetime(df['video_posted_date']).dt.date
 
@@ -44,6 +43,9 @@ try:
     df = df[(df['video_posted_date']>= video_date_posted[0]) & (df['video_posted_date']<= video_date_posted[1])]
 except:
     st.write('Please select range of date')
+
+
+st.write("##### Data scraped from {} videos as of {} and based on keyword: {}".format(len(df.video_link.unique()), keywords[[x.split('_')[1] for x in keywords].index(keyword)].split('_')[2][1:-1], keyword)) 
 
 mask = np.array(Image.open('tiktok.jpg'))
 # image = Image.open(r"C:\Users\Analyst07\Documents\Selenium\tiktok.jpg")
@@ -60,7 +62,19 @@ df = df.sort_values(by = ['likes'], ascending = False).reset_index(drop = True)
 
 subkeyword = column[2].text_input("Search sub-keyword")
 df = df[df['comment'].apply(lambda x: str(x).lower().find(subkeyword.lower())) != -1].reset_index(drop = True)
+
+
 st.write(df)
+
+# def make_clickable(link):
+#     # target _blank to open new window
+#     # extract clickable text to display for your link
+#     return f'<a target="_blank" href="{link}">{link}</a>'
+
+# # link is the column with hyperlinks
+# df['video_link'] = df['video_link'].apply(make_clickable)
+# df = df.to_html(escape=False)
+# st.write(df, unsafe_allow_html=True)
 
 
 st.download_button(
