@@ -39,7 +39,7 @@ searchHashtag = sys.argv[1]
 parent_dir = "C:\\Users\\Analyst07\\Documents\\Selenium"
 path = os.path.join(parent_dir, 'keyword_{}_({})'.format(searchHashtag,date.today()))
 os.mkdir(path)
-element = driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div/div[1]/div/form/input")
+element = driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div/div[1]/div/form/input")
 
 element.send_keys(searchHashtag)
 element.send_keys(Keys.ENTER)
@@ -50,7 +50,7 @@ time.sleep(10)
 i=0
 while i<1:
     try:
-        driver.find_element(By.XPATH, "/html/body/div[2]/div[3]/div[2]/div[1]/div/div[1]/div[1]/div[1]/div").click()
+        driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[1]/div").click()
         i=1
     except:
         i=0
@@ -60,7 +60,7 @@ while i<1:
 ii=0
 while ii<5:
     try:
-        NextStory = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[2]/div[3]/div[2]/div[2]/div[2]/button")))
+        NextStory = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[2]/div[2]/div[2]/div[2]/div[2]/button")))
         NextStory.click()
         time.sleep(2)
     except:
@@ -104,7 +104,7 @@ for tarikh in soup.find_all('div', class_= 'tiktok-842lvj-DivTimeTag e19c29qe14'
     tarikh = tarikh.text
     now = datetime.now()
     if tarikh.find('h') != -1:
-        x = now  - timedelta(hours = int(tarikh.split('h')[0]))
+        x = now - timedelta(hours = int(tarikh.split('h')[0]))
         tarikh = '{}-{}-{}'.format(x.year,x.month,x.day)
     elif tarikh.find('d') != -1:
         x = now - timedelta(days = int(tarikh.split('d')[0]))
@@ -138,7 +138,7 @@ df.to_csv(path + '\\topVideos({})_({}).csv'.format(searchHashtag,date.today()), 
 
 # df = df.sort_values(by = ['posted_date'], ascending = False).reset_index(drop = True)
 
-for link, tarikh in zip(df['tiktok_link'][:15],df['posted_date'][:15]):
+for link, tarikh in zip(df['tiktok_link'][:20],df['posted_date'][:15]):
     scrape_tiktok_comments(path, link, searchHashtag, tarikh)
 
     

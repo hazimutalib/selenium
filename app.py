@@ -50,23 +50,29 @@ mask = np.array(Image.open('tiktok.jpg'))
 # image = Image.open(r"C:\Users\Analyst07\Documents\Selenium\tiktok.jpg")
 # st.image(image)
 stop = ['tu', 'dia', 'nak', 'yg' , 'la', 'dah', 'nk', 'ni', 'je', 'di', 'ko', 'ok', 'ini', 'pun' , 'dgn', 'utk', 'kat', 'kt', 'aku', 'kau', 'kita'
-        'kan', 'lg', 'dlm', 'pon', 'tau', 'jer', 'itu', 'dan', 'saya', 'sy', 'sbb', 'nya', 'ke', 'kan']
+        'kan', 'lg', 'dlm', 'pon', 'tau', 'jer', 'itu', 'dan', 'saya', 'sy', 'sbb', 'nya', 'ke', 'kan', 'tak', 'ada', 'apa',
+        'kita', 'lah', 'lagi', 'jgn', 'klu', 'org', 'x', 'blh', 'tp', 'dia', 'mcm', 'dh', 'yang', 'jadi', 'ckp', 'skrg', 'bkn',
+        'dpt', 'untuk', 'lain', 'macam', 'mmg', 'kn', 'tk', 'lebih', 'n', 'byk', 'dari', 'hahaha', 'jd', 'akan', 'mana', 'juga',
+        'pulak', 'ja', 'pa','die', 'i', 'nie', 'ka', 'atau', 'kami', 'dalam', 'bg', 'tidak', 'bro', 'bila']
 
-
-df = df[['sentiment', 'comment', 'username', 'nickname', 'likes', 'noOfRepliedComments', 'posted_date',	'extracted_date', 'video_link',
-	'video_likes', 'video_comments', 'video_shared', 'video_posted_date']]
 
 st.write("\n \n \n")
 df = df.sort_values(by = ['likes'], ascending = False).reset_index(drop = True)
 
 subkeyword = column[2].text_input("Search sub-keyword")
 df = df[df['comment'].apply(lambda x: str(x).lower().find(subkeyword.lower())) != -1].reset_index(drop = True)
+# df['video_likes_new'] = df.video_likes.apply(lambda x: int(x) if str(x).lower().find('k') != -1 else int(float(str(x)[:-1])*1000))
+df = df[['sentiment', 'comment', 'username', 'nickname', 'likes', 'noOfRepliedComments', 'posted_date',	'extracted_date', 'video_link',
+	'video_likes', 'video_comments', 'video_shared', 'video_posted_date']]
+
 st.write("##### Data scraped as of {} and based on keyword: {}".format(keywords[[x.split('_')[1] for x in keywords].index(keyword)].split('_')[2][1:-1], keyword)) 
 
 
 total_videos = len(df.video_link.unique())
 total_comments = len(df)
 total_user = len(df.username.unique())
+# video_most_likes =max(df.video_likes.apply(lambda x: int(x)  if str(x).find('K') !=-1 else int(x[:-1]*1000)))
+# video_most_shared =max(df.video_shared)
 
 st.markdown("""
 <style>
@@ -123,8 +129,8 @@ st.markdown("""
   padding: 1em;
   border-radius: 0.3em;
   font-family: sans-serif;  
-  width: 150px;
-  min-width: 150px;
+  width: 180px;
+  min-width: 180px;
   margin-right: 6.0em;
   margin-bottom: 1em;
 }
@@ -156,6 +162,7 @@ st.markdown("""<div id="container">
     <span class="card-value">{:,}</span>
     <span class="card-text">Total Username</span>
   </div>
+
 </div>""".format(total_videos, total_comments, total_user), unsafe_allow_html=True
 )
 
