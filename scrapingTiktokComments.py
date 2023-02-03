@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import time 
-from datetime import date,datetime
+from datetime import date, datetime, timedelta
 import re
 import sys
 import os
@@ -78,7 +78,23 @@ def scrape_tiktok_comments(path,link,keyword,tarikh):
                 list['noOfRepliedComments'] = row.find('p', attrs = {'class':'tiktok-1qqecn-PReplyActionText eo72wou4'}).text.split(' ')[3][1:-1]
             except:
                 list['noOfRepliedComments'] = 0
-            list['posted_date'] = row.find('p', attrs = {'class':'tiktok-1wmf4bu-PCommentSubContent e1g2efjf8'}).span.text 
+            comment_date = row.find('p', attrs = {'class':'tiktok-1wmf4bu-PCommentSubContent e1g2efjf8'}).span.text
+            now = datetime.now()
+            if comment_date.find('h') != -1:
+                x = now - timedelta(hours = int(comment_date.split('h')[0]))
+                comment_date = '{}-{}-{}'.format(x.year,x.month,x.day)
+            elif tarikh.find('d') != -1:
+                x = now - timedelta(days = int(comment_date.split('d')[0]))
+                comment_date = '{}-{}-{}'.format(x.year,x.month,x.day)
+            elif tarikh.find('w') != -1:
+                x = now - timedelta(weeks = int(comment_date.split('w')[0]))
+                comment_date = '{}-{}-{}'.format(x.year,x.month,x.day)
+            elif (len(tarikh)==4) | (len(tarikh)==5) :
+                x = tarikh.split('-')
+                comment_date = '{}-{}-{}'.format(x[1],'0'+x[1] if len(x[0]) == 1 else x[0], now.year)
+            else: 
+                comment_date = comment_date
+            list['posted_date'] =  comment_date
             list['extracted_date'] = date.today()
             list['video_link'] = link
             list['video_likes'] = video_likes
