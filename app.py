@@ -29,7 +29,7 @@ st.markdown("""
 
 st.write(""" # TikTok Sentiment Analysis""")
 
-column= st.columns([2, 2, 2, 6])
+column= st.columns([3, 3, 3, 6])
 keywords = glob.glob('keyword*')
 keyword = column[0].selectbox('Choose keyword: ', [x.split('_')[1] for x in keywords])
 
@@ -50,7 +50,7 @@ mask = np.array(Image.open('tiktok.jpg'))
 # image = Image.open(r"C:\Users\Analyst07\Documents\Selenium\tiktok.jpg")
 # st.image(image)
 stop = ['tu', 'dia', 'nak', 'yg' , 'la', 'dah', 'nk', 'ni', 'je', 'di', 'ko', 'ok', 'ini', 'pun' , 'dgn', 'utk', 'kat', 'kt', 'aku', 'kau', 'kita'
-        'kan', 'lg', 'dlm', 'pon', 'tau', 'jer', 'itu', 'dan', 'saya', 'sy', 'sbb', 'nya']
+        'kan', 'lg', 'dlm', 'pon', 'tau', 'jer', 'itu', 'dan', 'saya', 'sy', 'sbb', 'nya', 'ke', 'kan']
 
 
 df = df[['sentiment', 'comment', 'username', 'nickname', 'likes', 'noOfRepliedComments', 'posted_date',	'extracted_date', 'video_link',
