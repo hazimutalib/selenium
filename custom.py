@@ -69,7 +69,7 @@ def kpi_box_css():
     font-family: sans-serif;  
     width: 180px;
     min-width: 180px;
-    margin-right: 6.0em;
+    margin-right: 3.0em;
     margin-bottom: 1em;
     }
 
