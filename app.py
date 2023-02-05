@@ -27,7 +27,7 @@ keyword = column[0].selectbox('Choose keyword: ', [x.split('_')[1] for x in keyw
 
 df = pd.read_csv('./{}/sentiment.csv'.format(keywords[[x.split('_')[1] for x in keywords].index(keyword)]))
 df['video_posted_date'] = pd.to_datetime(df['video_posted_date']).dt.date
-video_date_posted = column[1].date_input('Date of the videos being posted:', value = (min(df['video_posted_date']), max(df['video_posted_date'])),key=1)
+video_date_posted = column[1].date_input('Posted date (videos):', value = (min(df['video_posted_date']), max(df['video_posted_date'])),key=1)
 try:
     df = df[(df['video_posted_date']>= video_date_posted[0]) & (df['video_posted_date']<= video_date_posted[1])]
 except:
