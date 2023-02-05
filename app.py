@@ -52,7 +52,7 @@ total_user = len(df.username.unique())
 st.sidebar.write("#### Scraped videos")
 df1 = df.groupby(['video_link', 'video_image_link', 'video_caption', 'video_posted_date', 'video_views','video_likes'])[['video_link', 'video_image_link', 'video_caption', 'video_posted_date', 'video_views','video_likes']].max()
 for a,b,c,d,e,f,g in list(zip(list(df1['video_link']),list(df1['video_image_link']), list(df1['video_caption']),list(df1['video_link'].apply(lambda x: x.split('/')[3])) , list(df1['video_posted_date']), list(df1['video_views']),list(df1['video_likes']))):
-  st.sidebar.image(b)
+  st.sidebar.image('Twitter.png')
   tiktok_video(a,b,c,d,e,f,g)
 
 df = df[['sentiment', 'comment', 'username', 'nickname', 'likes', 'noOfRepliedComments', 'posted_date', 'video_link']]
