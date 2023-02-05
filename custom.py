@@ -179,7 +179,7 @@ def tiktok_video(tiktok_link, tiktok_image, tiktok_caption, tiktok_creator, post
     <div class="tiktok-u7bnsh-DivItemContainer e1ymawm01">
       <div class="tiktok-1ys5eyp-DivCoverContainer e1ymawm02">
         <a href = "{}"> 
-        <img src="Twitter.png" class="tiktok-m86b9p-ImgCover e1ymawm04">
+        <img src="{}" class="tiktok-m86b9p-ImgCover e1ymawm04">
         </a>
         <div class="tiktok-i5lz20-DivDuration e1ymawm05">00:10</div>
       </div>
@@ -198,4 +198,4 @@ def tiktok_video(tiktok_link, tiktok_image, tiktok_caption, tiktok_creator, post
         </svg>{}
       </div>
   </div>
-    """.format(tiktok_link,  tiktok_caption, tiktok_creator, posted_date, tiktok_views, tiktok_likes), unsafe_allow_html=True,)
+    """.format(tiktok_link, tiktok_image, tiktok_caption, tiktok_creator, posted_date, tiktok_views, tiktok_likes), unsafe_allow_html=True,)
