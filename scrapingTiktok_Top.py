@@ -72,7 +72,7 @@ soup = BeautifulSoup(html, 'html.parser')
 
 
 #Scraping data tiktok
-tiktok_description, tiktok_link, username, tiktok_hashtag, tiktok_views, posted_date = [], [], [], [], [], []
+tiktok_description, tiktok_link, username, tiktok_hashtag, tiktok_views, posted_date, tiktok_image = [], [], [], [], [], [], []
 #title
 for title in soup.find_all('div', class_='tiktok-1ejylhp-DivContainer ejg0rhn0'):
     tiktok_description.append(title.text)
@@ -119,12 +119,17 @@ for tarikh in soup.find_all('div', class_= 'tiktok-842lvj-DivTimeTag e19c29qe14'
         tarikh = tarikh
     posted_date.append(tarikh)
 
+#img
+for image in soup.find_all('div', class_='tiktok-1jxhpnd-DivContainer e1yey0rl0'):
+    #print(link['href'])
+    tiktok_image.append(image.img['src'])
+
 
 
 #SAVE DATA
-listCols = ['tiktok_link', 'tiktok_description', 'tiktok_hashtag', 'Username', 'Views', 'posted_date']
+listCols = ['tiktok_link', 'tiktok_description', 'tiktok_hashtag', 'username', 'tiktok_views', 'posted_date', 'tiktok_image']
 dict_data = dict(zip(
-    listCols,(tiktok_link, tiktok_description, tiktok_hashtag , username, tiktok_views, posted_date)
+    listCols,(tiktok_link, tiktok_description, tiktok_hashtag , username, tiktok_views, posted_date, tiktok_image)
 ))
 
 # import json
@@ -138,8 +143,9 @@ df.to_csv(path + '\\topVideos({})_({}).csv'.format(searchHashtag,date.today()), 
 
 # df = df.sort_values(by = ['posted_date'], ascending = False).reset_index(drop = True)
 
-for link, tarikh in zip(df['tiktok_link'][:20],df['posted_date'][:15]):
-    scrape_tiktok_comments(path, link, searchHashtag, tarikh)
+for link, tarikh, views, image in list(zip(df['tiktok_link'][:20],df['posted_date'][:20],df['tiktok_views'][:20],
+                                        df['tiktok_image'][:20])):
+    scrape_tiktok_comments(path, link, searchHashtag, tarikh, views, image)
 
     
 

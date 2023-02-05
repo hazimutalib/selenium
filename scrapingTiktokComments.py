@@ -12,7 +12,7 @@ import re
 import sys
 import os
 
-def scrape_tiktok_comments(path,link,keyword,tarikh):
+def scrape_tiktok_comments(path,link,keyword,tarikh,video_views,video_image_link):
     #open Edge and the website
     http = link
     pathEdge = r'C:\Users\Analyst07\Documents\Selenium\Edge\msedgedriver.exe'
@@ -80,7 +80,10 @@ def scrape_tiktok_comments(path,link,keyword,tarikh):
                 list['noOfRepliedComments'] = 0
             comment_date = row.find('p', attrs = {'class':'tiktok-1wmf4bu-PCommentSubContent e1g2efjf8'}).span.text
             now = datetime.now()
-            if comment_date.find('h') != -1:
+            if comment_date.find('m') != -1:
+                x = now - timedelta(minutes = int(comment_date.split('m')[0]))
+                comment_date = '{}-{}-{}'.format(x.year,x.month,x.day)
+            elif comment_date.find('h') != -1:
                 x = now - timedelta(hours = int(comment_date.split('h')[0]))
                 comment_date = '{}-{}-{}'.format(x.year,x.month,x.day)
             elif tarikh.find('d') != -1:
@@ -101,6 +104,8 @@ def scrape_tiktok_comments(path,link,keyword,tarikh):
             list['video_comments'] = noOfComments
             list['video_shared'] = video_shared
             list['video_posted_date'] = tarikh
+            list['video_views'] = video_views
+            list['video_image_link'] = video_image_link
             lists.append(list)
 
         driver.close()
