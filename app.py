@@ -21,7 +21,7 @@ def convert_df_to_csv(df):
 
 st.write(""" # TikTok Sentiment Analysis""")
 
-column = st.columns([1,1,1,1])
+column = st.columns([1,1,1])
 keywords = glob.glob('keyword*')
 keyword = column[0].selectbox('Choose keyword: ', [x.split('_')[1] for x in keywords])
 
