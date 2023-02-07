@@ -6,7 +6,7 @@ from PIL import Image
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 import glob
 from datetime import date
-from custom import body_css, kpi_box_css, tiktok_video_css, kpi_box, tiktok_video
+from custom import body_css, kpi_box_css, tiktok_video_css, kpi_box, tiktok_video, tiktok_video_html
 
 st.set_page_config(layout="wide")
 
@@ -44,13 +44,14 @@ df = df.sort_values(by = ['likes'], ascending = False).reset_index(drop = True)
 
 subkeyword = column[2].text_input("Search sub-keyword")
 df = df[df['comment'].apply(lambda x: str(x).lower().find(subkeyword.lower())) != -1].reset_index(drop = True)
-st.write("##### Data scraped as of {} and based on keyword: {}".format(keywords[[x.split('_')[1] for x in keywords].index(keyword)].split('_')[2][1:-1], keyword)) 
+st.write("##### Data and videos  are scraped as of {} and based on keyword: {}".format(keywords[[x.split('_')[1] for x in keywords].index(keyword)].split('_')[2][1:-1], keyword)) 
 df.posted_date = pd.to_datetime(df.posted_date).dt.date
 total_videos = len(df.video_link.unique())
 total_comments = len(df)
 total_user = len(df.username.unique())
 
-st.sidebar.write("#### Scraped videos")
+kpi_box(total_videos, total_comments, total_user)
+
 def convert_full_figures(x):
   if str(x).find('K') != -1:
     x = int(float(str(x)[:-1])*1000)
@@ -67,18 +68,24 @@ df['video_views_full'] = df.video_views.apply(lambda x: convert_full_figures(x))
 df['video_comments_full'] = df.video_comments.apply(lambda x: convert_full_figures(x))
 df['video_shared_full'] = df.video_shared.apply(lambda x: convert_full_figures(x))
 
+
 df1 = df.groupby(['video_link', 'video_image_link', 'video_caption', 'video_posted_date', 'video_views','video_likes', 'video_views_full'])[['video_link', 'video_image_link', 'video_caption', 'video_posted_date', 'video_views','video_likes', 'video_views_full']].max().reset_index(drop=True).sort_values(by = ['video_views_full'], ascending = False)
+# for a,b,c,d,e,f,g in list(zip(list(df1['video_link']),list(df1['video_image_link']), list(df1['video_caption']),list(df1['video_link'].apply(lambda x: x.split('/')[3])) , list(df1['video_posted_date']), list(df1['video_views']),list(df1['video_likes']))):
+#   tiktok_video(a,b,c,d,e,f,g)
+
+st.write('###### Videos:')
+
+lol = ""
+hello = st.columns([2,1,2,1,2,1,2,1,2,1,2,1,2])
+i=0
 for a,b,c,d,e,f,g in list(zip(list(df1['video_link']),list(df1['video_image_link']), list(df1['video_caption']),list(df1['video_link'].apply(lambda x: x.split('/')[3])) , list(df1['video_posted_date']), list(df1['video_views']),list(df1['video_likes']))):
-  tiktok_video(a,b,c,d,e,f,g)
-
-
-
+  hello[2*i].markdown(tiktok_video_html(a,b,c,d,e,f,g), unsafe_allow_html=True )
+  i = i + 1
+  if i == 7:
+    i = 0
 df = df[['sentiment', 'comment', 'username', 'nickname', 'likes', 'noOfRepliedComments', 'posted_date', 'video_link']]
 
-kpi_box(total_videos, total_comments, total_user)
-
-
-
+st.write('###### Data:')
 st.write(df)
 
 # st.write(pd.to_datetime(df.posted_date.apply(lambda x: '{}-{}-{}'.format(x.split('/')[2],x.split('/')[1] if len(x.split('/')[1]) ==2 else '0'+str(x.split('/')[1]),
