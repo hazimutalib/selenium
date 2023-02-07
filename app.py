@@ -51,13 +51,33 @@ total_comments = len(df)
 total_user = len(df.username.unique())
 
 st.sidebar.write("#### Scraped videos")
-df1 = df.groupby(['video_link', 'video_image_link', 'video_caption', 'video_posted_date', 'video_views','video_likes'])[['video_link', 'video_image_link', 'video_caption', 'video_posted_date', 'video_views','video_likes']].max()
+def convert_full_figures(x):
+  if str(x).find('K') != -1:
+    x = int(float(str(x)[:-1])*1000)
+  elif str(x).find('M') != -1:
+    x = int(float(str(x)[:-1])*1000000)
+  elif x == 'Share':
+    x = 0
+  else:
+    x = int(x)
+  return x
+
+df['video_likes_full'] = df.video_likes.apply(lambda x: convert_full_figures(x))
+df['video_views_full'] = df.video_views.apply(lambda x: convert_full_figures(x))
+df['video_comments_full'] = df.video_comments.apply(lambda x: convert_full_figures(x))
+df['video_shared_full'] = df.video_shared.apply(lambda x: convert_full_figures(x))
+
+df1 = df.groupby(['video_link', 'video_image_link', 'video_caption', 'video_posted_date', 'video_views','video_likes', 'video_views_full'])[['video_link', 'video_image_link', 'video_caption', 'video_posted_date', 'video_views','video_likes', 'video_views_full']].max().reset_index(drop=True).sort_values(by = ['video_views_full'], ascending = False)
 for a,b,c,d,e,f,g in list(zip(list(df1['video_link']),list(df1['video_image_link']), list(df1['video_caption']),list(df1['video_link'].apply(lambda x: x.split('/')[3])) , list(df1['video_posted_date']), list(df1['video_views']),list(df1['video_likes']))):
   tiktok_video(a,b,c,d,e,f,g)
+
+
 
 df = df[['sentiment', 'comment', 'username', 'nickname', 'likes', 'noOfRepliedComments', 'posted_date', 'video_link']]
 
 kpi_box(total_videos, total_comments, total_user)
+
+
 
 st.write(df)
 
