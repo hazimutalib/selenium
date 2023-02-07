@@ -45,6 +45,7 @@ df = df.sort_values(by = ['likes'], ascending = False).reset_index(drop = True)
 subkeyword = column[2].text_input("Search sub-keyword")
 df = df[df['comment'].apply(lambda x: str(x).lower().find(subkeyword.lower())) != -1].reset_index(drop = True)
 st.write("##### Data scraped as of {} and based on keyword: {}".format(keywords[[x.split('_')[1] for x in keywords].index(keyword)].split('_')[2][1:-1], keyword)) 
+df.posted_date = pd.to_datetime(df.posted_date).dt.date
 total_videos = len(df.video_link.unique())
 total_comments = len(df)
 total_user = len(df.username.unique())
@@ -60,6 +61,9 @@ kpi_box(total_videos, total_comments, total_user)
 
 st.write(df)
 
+# st.write(pd.to_datetime(df.posted_date.apply(lambda x: '{}-{}-{}'.format(x.split('/')[2],x.split('/')[1] if len(x.split('/')[1]) ==2 else '0'+str(x.split('/')[1]),
+#           x.split('/')[0] if len(x.split('/')[0]) ==2 else '0'+str(x.split('/')[0])))).dt.date.unique())
+
 st.download_button(
   label="Download data as CSV",
   data=convert_df_to_csv(df),
@@ -67,7 +71,14 @@ st.download_button(
   mime='text/csv',
 )
 
-st.write("##### Based on {} comments:".format(len(df))) 
+
+
+line_chart_data = pd.DataFrame(df.groupby('posted_date')[['comment']].count())
+
+lol = st.columns(2)
+lol[0].write('### Total comments')
+lol[0].line_chart(line_chart_data)
+
 x1, padding, x2 = st.columns([6,3,9])
 
 def wordcloud():
@@ -92,13 +103,19 @@ def donut_chart():
   donut, text = ax2.pie(sizes, colors=['#01213d', '#004e92', '#0cf0f0'],startangle=90, frame=True,
       pctdistance =0.85,counterclock=False, wedgeprops={"edgecolor":"black",'linewidth': 0.5, 'linestyle': 'solid', 'antialiased': True})
   ax2.add_patch(plt.Circle((0, 0), radius=0.6,color='black', linewidth=1))
-  ax2.add_patch(plt.Circle((0, 0), radius=0.6,color='white', linewidth=0))
+  ax2.add_patch(plt.Circle((0, 0), radius=0.6,color= '#FFFFFF', linewidth=0))
   ax2.yaxis.set_visible(False)
   ax2.xaxis.set_visible(False)
   ax2.spines['right'].set_visible(False)
   ax2.spines['left'].set_visible(False)
   ax2.spines['top'].set_visible(False)
   ax2.spines['bottom'].set_visible(False)
+  plt.rcParams.update({
+    "figure.facecolor":  (1.0, 0.0, 0.0, 0.0),  # red   with alpha = 30%
+    "axes.facecolor":    (0.0, 1.0, 0.0, 0.0),  # green with alpha = 50%
+    "savefig.facecolor": (0.0, 0.0, 1.0, 0.0),  # blue  with alpha = 20%
+})
+
 
 
   recipe = ['negative \n {} ({:.2f}%)'.format(sizes[0],(sizes[0]/sizes.sum())*100), 

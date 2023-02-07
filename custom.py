@@ -27,7 +27,6 @@ def kpi_box_css():
 
     #container
     {
-    width: 1200px;
     display: flex;
     }
 
@@ -70,7 +69,7 @@ def kpi_box_css():
     font-family: sans-serif;  
     width: 180px;
     min-width: 180px;
-    margin-right: 3.0em;
+    margin-right: 0em;
     margin-bottom: 1em;
     }
 
@@ -84,6 +83,9 @@ def kpi_box_css():
     display:block;
     font-size: 70%;
     padding-left: 0.2em;
+    }
+    .lol {
+    justify-content : space-around;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -159,18 +161,20 @@ def tiktok_video_css():
     """, unsafe_allow_html=True,)
 
 def kpi_box(total_videos, total_comments, total_user):
-    st.markdown("""<div id="container">
-    <div class="kpi-card red-gradient ">
-        <span class="card-value">{:,}</span>
-        <span class="card-text">Total Videos</span>
-    </div>
-    <div class="kpi-card red-gradient ">
-        <span class="card-value">{:,}</span>
-        <span class="card-text">Total Comments</span>
-    </div>
-    <div class="kpi-card red-gradient ">
-        <span class="card-value">{:,}</span>
-        <span class="card-text">Total Username</span>
+    st.markdown("""
+    <div id="container"  class = "lol" >
+        <div class="kpi-card red-gradient ">
+            <span class="card-value">{:,}</span>
+            <span class="card-text">Total Videos</span>
+        </div>
+        <div class="kpi-card red-gradient ">
+            <span class="card-value">{:,}</span>
+            <span class="card-text">Total Comments</span>
+        </div>
+        <div class="kpi-card red-gradient ">
+            <span class="card-value">{:,}</span>
+            <span class="card-text">Total Username</span>
+        </div>
     </div>
     """.format(total_videos, total_comments, total_user), unsafe_allow_html=True)
 
