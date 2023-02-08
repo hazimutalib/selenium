@@ -105,18 +105,19 @@ for tarikh in soup.find_all('div', class_= 'tiktok-842lvj-DivTimeTag e19c29qe14'
     now = datetime.now()
     if tarikh.find('h') != -1:
         x = now - timedelta(hours = int(tarikh.split('h')[0]))
-        tarikh = '{}-{}-{}'.format(x.year,x.month if len(x.month) == 2 else '0'+str(x.month),x.day if len(x.day) == 2 else '0'+str(x.day))
+        tarikh = '{}-{}-{}'.format(x.year,x.month if len(str(x.month)) == 2 else '0'+str(x.month),x.day if len(str(x.day)) == 2 else '0'+str(x.day))
     elif tarikh.find('d') != -1:
         x = now - timedelta(days = int(tarikh.split('d')[0]))
-        tarikh = '{}-{}-{}'.format(x.year,x.month if len(x.month) == 2 else '0'+str(x.month),x.day if len(x.day) == 2 else '0'+str(x.day))
+        tarikh = '{}-{}-{}'.format(x.year,x.month if len(str(x.month)) == 2 else '0'+str(x.month),x.day if len(str(x.day)) == 2 else '0'+str(x.day))
     elif tarikh.find('w') != -1:
         x = now - timedelta(weeks = int(tarikh.split('w')[0]))
-        tarikh = '{}-{}-{}'.format(x.year,x.month if len(x.month) == 2 else '0'+str(x.month),x.day if len(x.day) == 2 else '0'+str(x.day))
+        tarikh = '{}-{}-{}'.format(x.year,x.month if len(str(x.month)) == 2 else '0'+str(x.month),x.day if len(str(x.day)) == 2 else '0'+str(x.day))
     elif (len(tarikh)==4) | (len(tarikh)==5) :
         x = tarikh.split('-')
         tarikh = '{}-{}-{}'.format(now.year,x[0] if len(x[0]) == 2 else '0'+str(x[0]), x[1] if len(x[1]) == 2 else '0'+str(x[1]))
-    else: 
-        tarikh = tarikh
+    else:
+        x = tarikh.split('-') 
+        tarikh = '{}-{}-{}'.format(x[0], x[1] if len(x[1]) ==2 else '0'+str(x[1]), x[0] if len(x[0]) ==2 else '0'+str(x[0]))
     posted_date.append(tarikh)
 
 #img
@@ -143,9 +144,10 @@ df.to_csv(path + '\\topVideos({})_({}).csv'.format(searchHashtag,date.today()), 
 
 # df = df.sort_values(by = ['posted_date'], ascending = False).reset_index(drop = True)
 
-for link, tarikh, views, image in list(zip(df['tiktok_link'][:20],df['posted_date'][:20],df['tiktok_views'][:20],
-                                        df['tiktok_image'][:20])):
-    scrape_tiktok_comments(path, link, searchHashtag, tarikh, views, image)
+numberOfVideos = 25
+for link, tarikh, views, image, caption in list(zip(df['tiktok_link'][:numberOfVideos],df['posted_date'][:numberOfVideos],df['tiktok_views'][:numberOfVideos],
+                                        df['tiktok_image'][:numberOfVideos],df['tiktok_description'][:numberOfVideos])):
+    scrape_tiktok_comments(path, link, searchHashtag, tarikh, views, image, caption)
 
     
 

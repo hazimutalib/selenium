@@ -6,7 +6,7 @@ from PIL import Image
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 import glob
 from datetime import date
-from custom import body_css, kpi_box_css, tiktok_video_css, kpi_box, tiktok_video, tiktok_video_html
+from custom import body_css, kpi_box_css, tiktok_video_css, kpi_box, tiktok_video_html, tiktok_comments_css, tiktok_comments_html
 
 st.set_page_config(layout="wide")
 
@@ -83,10 +83,29 @@ for a,b,c,d,e,f,g in list(zip(list(df1['video_link']),list(df1['video_image_link
   i = i + 1
   if i == 7:
     i = 0
-df = df[['sentiment', 'comment', 'username', 'nickname', 'likes', 'noOfRepliedComments', 'posted_date', 'video_link']]
+
+tiktok_comments_css()
+z = 12
+st.write('###### Top {} comments:'.format(z))
+j = 0
+k = 0
+
+columns = st.columns([13, 1, 13, 1, 13])
+for a,b,c,d,e,f,g in list(zip(df['avatar'][:z], df['username'][:z], df['nickname'][:z], df['comment'][:z], df['posted_date'][:z], df['likes'][:z], df['noOfRepliedComments'][:z])):
+  columns[2*k].markdown(tiktok_comments_html(a,b,c,d,e,f,g),unsafe_allow_html = True)
+  j = j + 1
+  if j >= 4 and j <8:
+    k = 1
+  elif j >= 8:
+    k = 2
+  else:
+    k =0
+
+
+df2 = df[['sentiment', 'comment', 'username', 'nickname', 'likes', 'noOfRepliedComments', 'posted_date', 'video_link']]
 
 st.write('###### Data:')
-st.write(df)
+st.write(df2)
 
 # st.write(pd.to_datetime(df.posted_date.apply(lambda x: '{}-{}-{}'.format(x.split('/')[2],x.split('/')[1] if len(x.split('/')[1]) ==2 else '0'+str(x.split('/')[1]),
 #           x.split('/')[0] if len(x.split('/')[0]) ==2 else '0'+str(x.split('/')[0])))).dt.date.unique())
@@ -165,3 +184,7 @@ def donut_chart():
 
 wordcloud()
 donut_chart()
+
+
+
+  

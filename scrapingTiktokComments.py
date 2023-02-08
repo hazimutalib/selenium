@@ -12,7 +12,7 @@ import re
 import sys
 import os
 
-def scrape_tiktok_comments(path,link,keyword,tarikh,video_views,video_image_link):
+def scrape_tiktok_comments(path,link,keyword,tarikh,video_views,video_image_link, video_caption):
     #open Edge and the website
     http = link
     pathEdge = r'C:\Users\Analyst07\Documents\Selenium\Edge\msedgedriver.exe'
@@ -82,22 +82,27 @@ def scrape_tiktok_comments(path,link,keyword,tarikh,video_views,video_image_link
             now = datetime.now()
             if comment_date.find('m') != -1:
                 x = now - timedelta(minutes = int(comment_date.split('m')[0]))
-                comment_date = '{}-{}-{}'.format(x.year,x.month if len(x.month) == 2 else '0'+str(x.month),x.day if len(x.day) == 2 else '0'+str(x.day))
+                comment_date = '{}-{}-{}'.format(x.year,x.month if len(str(x.month)) == 2 else '0'+str(x.month),x.day if len(str(x.day)) == 2 else '0'+str(x.day))
             elif comment_date.find('h') != -1:
                 x = now - timedelta(hours = int(comment_date.split('h')[0]))
-                comment_date = '{}-{}-{}'.format(x.year,x.month if len(x.month) == 2 else '0'+str(x.month),x.day if len(x.day) == 2 else '0'+str(x.day))
+                comment_date = '{}-{}-{}'.format(x.year,x.month if len(str(x.month)) == 2 else '0'+str(x.month),x.day if len(str(x.day)) == 2 else '0'+str(x.day))
             elif comment_date.find('d') != -1:
                 x = now - timedelta(days = int(comment_date.split('d')[0]))
-                comment_date = '{}-{}-{}'.format(x.year,x.month if len(x.month) == 2 else '0'+str(x.month),x.day if len(x.day) == 2 else '0'+str(x.day))
+                comment_date = '{}-{}-{}'.format(x.year,x.month if len(str(x.month)) == 2 else '0'+str(x.month),x.day if len(str(x.day)) == 2 else '0'+str(x.day))
             elif comment_date.find('w') != -1:
                 x = now - timedelta(weeks = int(comment_date.split('w')[0]))
-                comment_date = '{}-{}-{}'.format(x.year,x.month if len(x.month) == 2 else '0'+str(x.month),x.day if len(x.day) == 2 else '0'+str(x.day))
+                comment_date = '{}-{}-{}'.format(x.year,x.month if len(str(x.month)) == 2 else '0'+str(x.month),x.day if len(str(x.day)) == 2 else '0'+str(x.day))
             elif (len(comment_date)==4) | (len(comment_date)==5) :
                 x = comment_date.split('-')
                 comment_date = '{}-{}-{}'.format(now.year, x[0] if len(x[0]) ==2 else '0'+str(x[0]), x[1] if len(x[1]) ==2 else '0'+str(x[1]))
             else: 
                 x = comment_date.split('-')
                 comment_date = '{}-{}-{}'.format(x[0], x[1] if len(x[1]) ==2 else '0'+str(x[1]), x[0] if len(x[0]) ==2 else '0'+str(x[0]))
+            try:
+                avatar = row.find('span', attrs = {'class':'tiktok-tuohvl-SpanAvatarContainer e1e9er4e0'}).img['src']
+            except:
+                avatar = ' '
+            list['avatar'] = avatar
             list['posted_date'] =  comment_date
             list['extracted_date'] = date.today()
             list['video_link'] = link
@@ -107,6 +112,7 @@ def scrape_tiktok_comments(path,link,keyword,tarikh,video_views,video_image_link
             list['video_posted_date'] = tarikh
             list['video_views'] = video_views
             list['video_image_link'] = video_image_link
+            list['video_caption'] = video_caption
             lists.append(list)
 
         driver.close()
