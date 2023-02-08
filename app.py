@@ -117,7 +117,7 @@ st.download_button(
   mime='text/csv',
 )
 
-
+st.write(df.groupby('posted_date')[['comment']].count())
 
 line_chart_data = pd.DataFrame(df.groupby('posted_date')[['comment']].count())
 
