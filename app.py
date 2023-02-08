@@ -85,21 +85,21 @@ for a,b,c,d,e,f,g in list(zip(list(df1['video_link']),list(df1['video_image_link
     i = 0
 
 tiktok_comments_css()
-z = 12
-st.write('###### Top {} comments:'.format(z))
-j = 0
-k = 0
 
 columns = st.columns([13, 1, 13, 1, 13])
+z = columns[0].slider('View comments:', 0, 100, 12)
+columns[0].write('###### Top {} comments based on number of likes:'.format(z))
+columns = st.columns([13, 1, 13, 1, 13])
+
+
+j = 0
+
 for a,b,c,d,e,f,g in list(zip(df['avatar'][:z], df['username'][:z], df['nickname'][:z], df['comment'][:z], df['posted_date'][:z], df['likes'][:z], df['noOfRepliedComments'][:z])):
-  columns[2*k].markdown(tiktok_comments_html(a,b,c,d,e,f,g),unsafe_allow_html = True)
+  columns[2*j].markdown(tiktok_comments_html(a,b,c,d,e,f,g),unsafe_allow_html = True)
   j = j + 1
-  if j >= 4 and j <8:
-    k = 1
-  elif j >= 8:
-    k = 2
-  else:
-    k =0
+  if j == 3:
+    j = 0
+    
 
 
 df2 = df[['sentiment', 'comment', 'username', 'nickname', 'likes', 'noOfRepliedComments', 'posted_date', 'video_link']]

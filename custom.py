@@ -100,6 +100,7 @@ def tiktok_comments_css():
 
     .tiktok-16r0vzi-DivCommentItemContainer {
         margin-bottom: 16px;
+        min-height:150px
     }
     .tiktok-1kimton-DivCommentContentContainer {
         display: flex;
