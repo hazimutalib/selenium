@@ -12,6 +12,17 @@ import re
 import sys
 import os
 
+def convert_full_figures(x):
+  if str(x).find('K') != -1:
+    x = int(float(str(x)[:-1])*1000)
+  elif str(x).find('M') != -1:
+    x = int(float(str(x)[:-1])*1000000)
+  elif x == 'Share':
+    x = 0
+  else:
+    x = int(x)
+  return x
+
 def scrape_tiktok_comments(path,link,keyword,tarikh,video_views,video_image_link, video_caption):
     #open Edge and the website
     http = link
@@ -33,9 +44,19 @@ def scrape_tiktok_comments(path,link,keyword,tarikh,video_views,video_image_link
     driver.execute_script('videos = document.querySelectorAll("video"); for(video of videos) {video.pause()}')
     htmlTemp = driver.execute_script("return document.getElementsByTagName('html')[0].innerHTML")
     soupTemp = BeautifulSoup(htmlTemp, 'html.parser')
-    video_likes = soupTemp.find_all('strong', attrs = {'class':'tiktok-wxn977-StrongText edu4zum2'})[0].text
-    noOfComments= int(soupTemp.find_all('strong', attrs = {'class':'tiktok-wxn977-StrongText edu4zum2'})[1].text)
-    video_shared = soupTemp.find_all('strong', attrs = {'class':'tiktok-wxn977-StrongText edu4zum2'})[2].text
+    try:
+        video_likes = soupTemp.find_all('strong', attrs = {'class':'tiktok-wxn977-StrongText edu4zum2'})[0].text
+    except:
+        video_likes = soupTemp.find_all('strong', attrs = {'class':'tiktok-1asxc6s-StrongText edu4zum2'})[0].text
+    try:                                                           
+        noOfComments= int(convert_full_figures(soupTemp.find_all('strong', attrs = {'class':'tiktok-wxn977-StrongText edu4zum2'})[1].text))
+    except:
+        noOfComments= int(convert_full_figures(soupTemp.find_all('strong', attrs = {'class':'tiktok-1asxc6s-StrongText edu4zum2'})[1].text))
+    try:    
+        video_shared = soupTemp.find_all('strong', attrs = {'class':'tiktok-wxn977-StrongText edu4zum2'})[2].text
+    except:
+        video_shared = soupTemp.find_all('strong', attrs = {'class':'tiktok-1asxc6s-StrongText edu4zum2'})[2].text
+        
     time.sleep(20)
   
 
@@ -67,7 +88,6 @@ def scrape_tiktok_comments(path,link,keyword,tarikh,video_views,video_image_link
         lists = []
 
         table = soup.find('div', attrs = {'class':'tiktok-xzzes5-DivCommentListContainer ekjxngi0'})
-
         for row in table.findAll('div',attrs = {'class':'tiktok-16r0vzi-DivCommentItemContainer eo72wou0'}):
             list = {}
             list['comment'] = row.p.text
@@ -92,12 +112,12 @@ def scrape_tiktok_comments(path,link,keyword,tarikh,video_views,video_image_link
             elif comment_date.find('w') != -1:
                 x = now - timedelta(weeks = int(comment_date.split('w')[0]))
                 comment_date = '{}-{}-{}'.format(x.year,x.month if len(str(x.month)) == 2 else '0'+str(x.month),x.day if len(str(x.day)) == 2 else '0'+str(x.day))
-            elif (len(comment_date)==4) | (len(comment_date)==5) :
+            elif len(comment_date)<=5 :
                 x = comment_date.split('-')
                 comment_date = '{}-{}-{}'.format(now.year, x[0] if len(x[0]) ==2 else '0'+str(x[0]), x[1] if len(x[1]) ==2 else '0'+str(x[1]))
             else: 
                 x = comment_date.split('-')
-                comment_date = '{}-{}-{}'.format(x[0], x[1] if len(x[1]) ==2 else '0'+str(x[1]), x[0] if len(x[0]) ==2 else '0'+str(x[0]))
+                comment_date = '{}-{}-{}'.format(x[0], x[1] if len(x[1]) ==2 else '0'+str(x[1]), x[2] if len(x[2]) ==2 else '0'+str(x[2]))
             try:
                 avatar = row.find('span', attrs = {'class':'tiktok-tuohvl-SpanAvatarContainer e1e9er4e0'}).img['src']
             except:
