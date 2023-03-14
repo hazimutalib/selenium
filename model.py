@@ -17,7 +17,7 @@ for name in files:
     print(name)
     df_temp = pd.read_csv(name)
     l.append(df_temp)
-    df = pd.concat(l)
+df = pd.concat(l)
 
 
 model = malaya.sentiment.multinomial()

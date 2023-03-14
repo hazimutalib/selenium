@@ -32,26 +32,6 @@ try:
     df = df[(df['video_posted_date']>= video_date_posted[0]) & (df['video_posted_date']<= video_date_posted[1])]
 except:
     st.write('Please select range of date')
-
-mask = np.array(Image.open('tiktok.jpg'))
-stop = ['tu', 'dia', 'nak', 'yg' , 'la', 'dah', 'nk', 'ni', 'je', 'di', 'ko', 'ok', 'ini', 'pun' , 'dgn', 'utk', 'kat', 'kt', 'aku', 'kau', 'kita'
-        'kan', 'lg', 'dlm', 'pon', 'tau', 'jer', 'itu', 'dan', 'saya', 'sy', 'sbb', 'nya', 'ke', 'kan', 'tak', 'ada', 'apa',
-        'kita', 'lah', 'lagi', 'jgn', 'klu', 'org', 'x', 'blh', 'tp', 'dia', 'mcm', 'dh', 'yang', 'jadi', 'ckp', 'skrg', 'bkn',
-        'dpt', 'untuk', 'lain', 'macam', 'mmg', 'kn', 'tk', 'lebih', 'n', 'byk', 'dari', 'hahaha', 'jd', 'akan', 'mana', 'juga',
-        'pulak', 'ja', 'pa','die', 'i', 'nie', 'ka', 'atau', 'kami', 'dalam', 'bg', 'tidak', 'bro', 'bila']
-
-df = df.sort_values(by = ['likes'], ascending = False).reset_index(drop = True)
-
-subkeyword = column[2].text_input("Search sub-keyword")
-df = df[df['comment'].apply(lambda x: str(x).lower().find(subkeyword.lower())) != -1].reset_index(drop = True)
-st.write("##### Data and videos  are scraped as of {} and based on keyword: {}".format(keywords[[x.split('_')[1] for x in keywords].index(keyword)].split('_')[2][1:-1], keyword)) 
-df.posted_date = pd.to_datetime(df.posted_date).dt.date
-total_videos = len(df.video_link.unique())
-total_comments = len(df)
-total_user = len(df.username.unique())
-
-kpi_box(total_videos, total_comments, total_user)
-
 def convert_full_figures(x):
   if str(x).find('K') != -1:
     x = int(float(str(x)[:-1])*1000)
@@ -67,6 +47,26 @@ df['video_likes_full'] = df.video_likes.apply(lambda x: convert_full_figures(x))
 df['video_views_full'] = df.video_views.apply(lambda x: convert_full_figures(x))
 df['video_comments_full'] = df.video_comments.apply(lambda x: convert_full_figures(x))
 df['video_shared_full'] = df.video_shared.apply(lambda x: convert_full_figures(x))
+df = df.sort_values(by = ['video_likes_full'], ascending = False).reset_index(drop = True)
+
+mask = np.array(Image.open('tiktok.jpg'))
+stop = ['tu', 'dia', 'nak', 'yg' , 'la', 'dah', 'nk', 'ni', 'je', 'di', 'ko', 'ok', 'ini', 'pun' , 'dgn', 'utk', 'kat', 'kt', 'aku', 'kau', 'kita'
+        'kan', 'lg', 'dlm', 'pon', 'tau', 'jer', 'itu', 'dan', 'saya', 'sy', 'sbb', 'nya', 'ke', 'kan', 'tak', 'ada', 'apa',
+        'kita', 'lah', 'lagi', 'jgn', 'klu', 'org', 'x', 'blh', 'tp', 'dia', 'mcm', 'dh', 'yang', 'jadi', 'ckp', 'skrg', 'bkn',
+        'dpt', 'untuk', 'lain', 'macam', 'mmg', 'kn', 'tk', 'lebih', 'n', 'byk', 'dari', 'hahaha', 'jd', 'akan', 'mana', 'juga',
+        'pulak', 'ja', 'pa','die', 'i', 'nie', 'ka', 'atau', 'kami', 'dalam', 'bg', 'tidak', 'bro', 'bila']
+
+subkeyword = column[2].text_input("Search sub-keyword")
+df = df[df['comment'].apply(lambda x: str(x).lower().find(subkeyword.lower())) != -1].reset_index(drop = True)
+st.write("##### Data and videos  are scraped as of {} and based on keyword: {}".format(keywords[[x.split('_')[1] for x in keywords].index(keyword)].split('_')[2][1:-1], keyword)) 
+df.posted_date = pd.to_datetime(df.posted_date).dt.date
+total_videos = len(df.video_link.unique())
+total_comments = len(df)
+total_user = len(df.username.unique())
+
+kpi_box(total_videos, total_comments, total_user)
+
+
 
 
 df1 = df.groupby(['video_link', 'video_image_link', 'video_caption', 'video_posted_date', 'video_views','video_likes', 'video_views_full'])[['video_link', 'video_image_link', 'video_caption', 'video_posted_date', 'video_views','video_likes', 'video_views_full']].max().reset_index(drop=True).sort_values(by = ['video_views_full'], ascending = False)
